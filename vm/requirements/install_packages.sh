@@ -10,8 +10,6 @@ sudo dnf install -y git vim
 curl -sL https://rpm.nodesource.com/setup_18.x | sudo -E bash -
 sudo dnf install -y nodejs
 
-# Install Express and CORS
-npm install express cors
 
 # Add the MongoDB repository (before installation)
 echo "[mongodb-org-6.0]
@@ -26,6 +24,9 @@ sudo dnf install -y mongodb-org
 
 # Enable and start MongoDB service
 sudo systemctl enable --now mongod
+
+# Install npm dependencies:
+npm install ../app/backend --no-bin-links # Symlinks is not working properly between the host and the VM volume.
 
 # Verify installations
 git --version
