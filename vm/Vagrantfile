@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
   # Application consts:
   APP_PORT = 3000 # The port your app will run on inside the VM
-  MONGO_URL = "mongodb://localhost:27017"  # MongoDB URL
+  MONGO_URL = "mongodb://127.0.0.1:27017"  # MongoDB URL
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
@@ -25,9 +25,10 @@ Vagrant.configure("2") do |config|
   #   # Customize the amount of memory on the VM:
   #   vb.memory = "1024"
   # end
-  # Configuring Rocky Linux instance using Oracle Virtualbox
-  
-  config.vm.box = "rockylinux/8"
+
+
+  # Configuring Rocky Linux instance using Oracle Virtualbox:
+  config.vm.box = "bento/rockylinux-8" # Official rockylinux seem to return 404 from hashicorp hub
   config.vm.provider "virtualbox" do |vb|
     vb.memory = "2048"  # Set the amount of memory for the VM
     vb.cpus = 2         # Set the number of CPUs for the VM
@@ -75,9 +76,8 @@ Vagrant.configure("2") do |config|
   # config.vm.synced_folder ".", "/vagrant", disabled: true
 
   # Configuring the application scripts dir as a volume into the vm
-  config.vm.synced_folder "../app", "/app", disabled: true
+  config.vm.synced_folder "../app", "/app"
   #  Configuring Vagrant 
-  config.vm.synced_folder "./requirements", "/vagrant_data", disabled: true
   
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -89,20 +89,19 @@ Vagrant.configure("2") do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
   # documentation for more information about their specific syntax and use.
-  # config.vm.provision "shell", inline: <<-SHELL
-  #   apt-get update
-  #   apt-get install -y apache2
-  # SHELL
 
   # Installing the app dependencies using an external script:
-  config.vm.provision "shell", path: "/vagrant_data/install_packages.sh"
+  config.vm.provision "shell", path: "./requirements/install_packages.sh"
 
   # Set the MONGODB_URL environment variable and run the application
   config.vm.provision "shell", inline: <<-SHELL
     echo "Setting MONGODB_URL environment variable"
     export MONGODB_URL=#{MONGO_URL}  # Set the MongoDB connection URL
+    echo "Changing to /app directory"
+    cd /app  # Navigate to the /app directory
     echo "Starting Node.js application"
-    nohup node /app/index.js &  # Start the app in the background
+    echo "DEBUG DEBUG MONGO_URL=${MONGODB_URL}"
+    nohup node backend/index.js # Start the app in the background
   SHELL
 
 end
