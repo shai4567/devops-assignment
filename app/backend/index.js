@@ -1,6 +1,7 @@
 const { MongoClient } = require("mongodb");
 const express = require("express");
 const cors = require("cors");
+const path = require('path');
 const app = express();
 const port = 3000;
 const url = process.env.MONGODB_URL;
@@ -26,6 +27,7 @@ async function main() {
   console.log("Prepared mongodb");
 
   app.use(cors());
+  app.use(express.static(path.join(__dirname, '../frontend')));  // Serve static files from 'frontend' folder
 
   app.get("/orders", async (req, res) => {
     const orders = await orderCollection.find({}).toArray();
