@@ -46,6 +46,8 @@ Vagrant.configure("2") do |config|
   # accessing "localhost:8080" will access port 80 on the guest machine.
   # NOTE: This will enable public access to the opened port
   config.vm.network "forwarded_port", guest: APP_PORT, host: APP_PORT
+  config.vm.network "forwarded_port", guest: 80, host: 8082
+  config.vm.network "forwarded_port", guest: 443, host: 8083
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine and only allow access
@@ -91,7 +93,16 @@ Vagrant.configure("2") do |config|
   # documentation for more information about their specific syntax and use.
 
   # Installing the app dependencies using an external script:
+  config.vm.provision "shell", inline: <<-SHELL
+    # Get the VM's private IP address
+    IP_ADDRESS=$(hostname -I | awk '{print $1}')
+    
+    # Add the entry to /etc/hosts
+    echo "$IP_ADDRESS nice-assignment.local" | sudo tee -a /etc/hosts
+  SHELL
+  
   config.vm.provision "shell", path: "./requirements/install_packages.sh"
+  # config.vm.provision "shell", path: "./run.sh"
 
   # =========================== RUN THE APPLICATION LOCALLY FROM THE VM IF NODEJS AND MONGO IS INSTALLED: ===========================
   # Set the MONGODB_URL environment variable and run the application

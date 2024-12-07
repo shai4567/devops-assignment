@@ -17,3 +17,8 @@ spec:
             name: {{ .Values.nodejs.service.name }}  # Use the service name from values.yaml
             port:
               number: {{ .Values.nodejs.service.port }}  # Use the service port from values.yaml
+
+  tls:
+  - hosts:
+    - nice-assignment.local
+    secretName: nginx-ingress-tls  # The secret with the SSL certificate

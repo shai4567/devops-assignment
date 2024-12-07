@@ -73,14 +73,3 @@ curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | sudo 
 
 # ====================================== In order to run the app directly from the VM - without cluster =================================
 
-
-# Verify installations
-git --version
-vim --version
-# node --version
-# npm --version
-# mongod --version
-docker --version
-bazel --version
-k3s --version
-helm version
