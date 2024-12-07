@@ -5,6 +5,10 @@ sudo dnf update -y
 
 # Install Git, Vim, and dependencies for Node.js
 sudo dnf install -y git vim wget curl gnupg
+sudo dnf install -y python3 python3-pip
+sudo pip3 install setuptools_rust
+sudo pip3 install --upgrade pip
+sudo pip3 install cryptography
 
 # Installing docker:
 sudo dnf install -y dnf-utils device-mapper-persistent-data lvm2
