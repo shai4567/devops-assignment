@@ -40,6 +40,9 @@ k3s --version
 # Giving vagrant user the permissions to k3s config file
 sudo chmod 644 /etc/rancher/k3s/k3s.yaml
 
+# Installing helm:
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | sudo bash
+
 # ====================================== In order to run the app directly from the VM - without cluster =================================
 
 # Install Node.js (using the NodeSource repository for the latest version)
@@ -76,3 +79,4 @@ vim --version
 docker --version
 bazel --version
 k3s --version
+helm version
