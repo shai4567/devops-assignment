@@ -37,6 +37,8 @@ sudo cp /etc/rancher/k3s/k3s.yaml /home/$(whoami)/.kube/config
 sudo chown $(whoami):$(whoami) /home/$(whoami)/.kube/config
 
 k3s --version
+# Giving vagrant user the permissions to k3s config file
+sudo chmod 644 /etc/rancher/k3s/k3s.yaml
 
 # ====================================== In order to run the app directly from the VM - without cluster =================================
 
