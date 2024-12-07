@@ -2,3 +2,4 @@ installations/*
 .vagrant
 node_modules
 package-lock.json
+ssl_certs
