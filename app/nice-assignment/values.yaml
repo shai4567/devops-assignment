@@ -1,0 +1,27 @@
+replicaCount: 1
+
+mongodb:
+#   image:
+#     repository: mongo
+#     tag: latest
+  namespace: "mongo"
+  service:
+    name: mongo-mongodb
+    port: 27017
+
+nodejs:
+  image:
+    repository: localhost:5000/nodeapp
+    tag: 1.0.0
+  service:
+    name: nodejs-app-service
+    port: 3000
+
+ingress:
+  enabled: false
+  name: nice-assignment-ingress
+  hosts:
+    - host: nice-assignment.local
+      paths:
+        - path: /
+          pathType: Prefix

@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-ingress  # Dynamic name based on the release name
+  namespace: {{ .Values.namespace }}  # Use the namespace value from values.yaml
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: {{ .Values.ingress.host }}  # Specify the DNS from values.yaml
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Values.nodejs.service.name }}  # Use the service name from values.yaml
+            port:
+              number: {{ .Values.nodejs.service.port }}  # Use the service port from values.yaml

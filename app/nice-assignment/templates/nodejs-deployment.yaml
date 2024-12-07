@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-app
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: nodejs-app
+  template:
+    metadata:
+      labels:
+        app: nodejs-app
+    spec:
+      containers:
+        - name: nodejs-app
+          image: "{{ .Values.nodejs.image.repository }}:{{ .Values.nodejs.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.nodejs.service.port }}
+          env:
+            - name: MONGODB_URL
+              value: "mongodb://{{ .Values.mongodb.service.name }}.{{ .Values.mongodb.namespace }}.svc.cluster.local:{{ .Values.mongodb.service.port }}"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.nodejs.service.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    app: nodejs-app
+  ports:
+    - protocol: TCP
+      port: {{ .Values.nodejs.service.port }}
+      targetPort: {{ .Values.nodejs.service.port }}
